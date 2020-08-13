@@ -2,4 +2,3 @@ env
 flask_session
 .idea
 .vscode
-_pycache_
