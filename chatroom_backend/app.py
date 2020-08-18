@@ -3,7 +3,7 @@ import sys
 
 from flask import Flask, request, session, jsonify
 
-#  session
+
 from flask_session import Session
 from flask_socketio import SocketIO, emit, send
 from sqlalchemy import create_engine
@@ -23,13 +23,13 @@ Session(app)
 
 app.debug = True
 
-app.config["SECRET_KEY"] = 'potato'  # os.getenv("SECRET_KEY")
+app.config["SECRET_KEY"] = 'potato'  
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:1234@localhost/chatroom'
 
 
 model.db.init_app(app)
-# db = SQLAlchemy(app)
+
 migrate = Migrate(app, model.db)
 
 
@@ -39,7 +39,6 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 @app.route("/signin",  methods=["POST"])
 def signin():
     jsondata = request.get_json()
-    # print (jsondata)
     username = jsondata["username"]
     password = jsondata["password"]
 
@@ -179,11 +178,8 @@ def message(data):
     channel_id = data["channel_id"]
     channel = model.Channel.query.filter_by(
         channel_id=channel_id).first()
-    # channel_schema = model.ChannelSchema()
-    # channel_data = channel_schema.dump(channel)
     user_ids = [c.user_id for c in channel.users]
     if user_id in user_ids:
-        # print("hello world")
         try:
             me = model.Message(message_body=message,
                                user_id=user_id, channel_id=channel_id)
@@ -195,7 +191,6 @@ def message(data):
                 'username': username
             }
             print(message, channel.channel_name)
-            # print("hello world")
             emit(channel.channel_name, json.dumps({"message": message}),broadcast=True)
         except Exception:
             return jsonify('Message sending failed')
@@ -203,15 +198,6 @@ def message(data):
     else:
         return jsonify('Excess denied')
 
-
-# @app.route("/addChannel",  methods=["POST"])
-# def sign_up(usename,email,password):
-
-#     me = User(username, email, password)
-#     db.session.add(me)
-#     db.session.commit()
-
-#     return True
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
