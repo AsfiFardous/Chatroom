@@ -3,7 +3,7 @@
 1.The app has been developed with Flask and React.Js framework.
 
 2.Users will be able to register and then log in using their username and password.
-3.allows users to add channels to the pltaform, sending and receiving messages in each channel and also add members to a channel.
+3.Allows users to add channels to the platform, sending and receiving messages in each channel and also add members to a channel.
 
 ## Requirements
 * pip3
